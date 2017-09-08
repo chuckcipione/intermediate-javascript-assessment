@@ -12,8 +12,15 @@
 // with the animal as the context, and 'Trogdor' as a parameter.
 // return the result of your updateAnimal invocation
 
-// CODE HERE...
-
+function callBinding(magicAnimals, updateAnimal, id){
+    var updated;
+    magicAnimals.forEach(animalObj => {
+        if(animalObj.id === id){
+            updated = updateAnimal.call(animalObj, 'Trogdor')
+        }
+    })
+    return updated;
+}
 
 
 // *************
@@ -27,8 +34,15 @@
 // with the context of the animal, and the array ['being majestic', 'eating rainbows'] as a parameter.
 // return the result of your updateAnimal invocation
 
-// CODE HERE...
-
+function applyBinding(magicAnimals, updateAnimal, id){
+    var updated;
+    magicAnimals.forEach(animalObj => {
+        if(animalObj.id === id){
+            updated = updateAnimal.apply(animalObj, ['being majestic', 'eating rainbows'])
+        }
+    })
+    return updated;
+}
 
 
 // *************
@@ -47,8 +61,11 @@
 
 var foo;
 
-// CODE HERE...
-
+promiseMe = ($q) => {
+    var defer = $q.defer();
+    setTimeout(() => {foo = 'bar'; defer.resolve(foo);}, 20)
+    return defer.promise;
+}
 
 
 // *************
@@ -63,4 +80,17 @@ var foo;
 // Make an array of emails (array of strings) from the returned data (You will need to console log or debug to figure this out),
 // and then resolve the array as you complete your promise.
 
-// CODE HERE...
+function emailList($q, $http){
+    var defer = $q.defer()
+    var emails = [];
+    $http({
+        method: 'GET',
+        url: '/api/users'
+    }).then(function(res){
+        res.data.forEach(obj => {
+            emails.push(obj.email)
+        })
+        defer.resolve(emails)
+    })
+    return defer.promise;
+}
